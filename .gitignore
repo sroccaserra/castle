@@ -1,0 +1,10 @@
+.env
+backup
+cdata
+config.txt
+cstore
+log.txt
+plates
+sdl_controllers.txt
+
+.local
