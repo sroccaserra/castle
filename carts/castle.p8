@@ -339,7 +339,6 @@ function dot:draw()
   color(11)
   if self:collides() then
     print("ca touche",1,1)
-    camera(camera_x,camera_y)
     local mx=flr(self.x/8)*8
     local my=flr(self.y/8)*8
     rect(mx,my,mx+7,my+7)
@@ -384,7 +383,7 @@ function tiles:update()
 end
 
 function get_tile(x,y)
-  return mget(x/8,y/8)
+  return mget((camera_x+x)/8,(camera_y+y)/8)
 end
 
 function is_solid(x,y)
@@ -411,7 +410,7 @@ function swap_tile(offset,first,second)
 end
 
 function tiles:swap(first,second)
-  local start_offset = 0x2000
+  local start_offset = 0x2000+camera_x/8+camera_y*0x780/8
   for lin=start_offset,start_offset+0x780,128 do
     for col=0,0xf do
       local offset=lin+col
