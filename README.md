@@ -1,6 +1,6 @@
-Castle est une cartouche [PICO-8](https://www.lexaloffle.com/pico-8.php).
+Castle est une cartouche [PICO-8](https://www.lexaloffle.com/pico-8.php) en cours de développement.
 
-<img src="images/castle_000.png" width="256px" height="auto">
+<img src="images/castle_3.gif" width="256px" height="auto">
 
 ## Prérequis
 
