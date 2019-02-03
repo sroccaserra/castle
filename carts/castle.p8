@@ -7,32 +7,24 @@ __lua__
 v_0 = 4
 acc = -0.33
 dx_max=1
-camera_x=128
-camera_y=0
-
-game={}
-
-function game:pause()
-  self.is_paused = true
-end
 
 function _init()
   show_graph=false
   show_dot=false
   show_collision_points=false
   play_music=false
-  game.is_paused=false
   menuitem(1,"reset",_init)
   menuitem(2,"toggle music",toggle_music)
   menuitem(3,"toggle graph",toggle_graph)
   menuitem(4,"toggle collision_points",toggle_collision_points)
   menuitem(5,"toggle dot",toggle_dot)
+  game:init()
   tiles:init()
   player:init()
 end
 
 function _draw()
-  camera(camera_x,camera_y)
+  game:room_camera()
   cls()
   map()
   camera()
@@ -65,6 +57,69 @@ function _update60()
     dot:update()
   else
     player:update()
+  end
+end
+
+-->8
+-- game
+
+game={}
+
+rooms={
+  graveyard={
+    name='graveyard',
+    camera_x=0,
+    camera_y=0,
+    east='castle_gate'
+  },
+  castle_gate={
+    name='castle gate',
+    camera_x=128,
+    camera_y=0,
+    west='graveyard'
+  }
+}
+
+function game:pause()
+  self.is_paused = true
+end
+
+function game:init()
+  self.room=rooms['castle_gate']
+  self.is_paused=false
+end
+
+function game:room_camera()
+  camera(self.room.camera_x,self.room.camera_y)
+end
+
+function game:room_name()
+  return self.room.name
+end
+
+function game:go_west()
+  local next_room=rooms[self.room.west]
+  self.room=next_room
+end
+
+function game:go_east()
+  local next_room=rooms[self.room.east]
+  self.room=next_room
+end
+
+function game:get_tile(x,y)
+  return mget((self.room.camera_x+x)/8,(self.room.camera_y+y)/8)
+end
+
+function game:swap_tiles(first,second)
+  local start_offset = 0x2000+self.room.camera_x/8+self.room.camera_y*0x780/8
+  for lin=start_offset,start_offset+0x780,128 do
+    for col=0,0xf do
+      local offset=lin+col
+      if (offset+tiles.swap_counter)%30==0 then
+        swap_tile(offset,first,second)
+      end
+    end
   end
 end
 
@@ -133,10 +188,10 @@ function player:update()
   end
 
   if self.x<0 then
-    camera_x=max(0,camera_x-128)
+    game:go_west()
     self.x=120
   elseif self.x>120 then
-    camera_x=camera_x+128
+    game:go_east()
     self.x=0
   end
 end
@@ -330,7 +385,6 @@ dot = {
   y=63
 }
 
-
 function toggle_dot()
   show_dot = not show_dot
 end
@@ -354,7 +408,7 @@ function dot:draw()
     print("ca touche pas",1,1)
   end
   camera()
-  print(get_tile(self.x,self.y).." - "..self.x..","..self.y,1,7)
+  print(game:get_tile(self.x,self.y).." - "..self.x..","..self.y,1,7)
 end
 
 function dot:collides()
@@ -385,27 +439,24 @@ function tiles:init()
 end
 
 function tiles:update()
-  self:swap(25,26)
-  self:swap(57,58)
+  game:swap_tiles(25,26)
+  game:swap_tiles(57,58)
   self.swap_counter=self.swap_counter+1
 end
 
-function get_tile(x,y)
-  return mget((camera_x+x)/8,(camera_y+y)/8)
-end
 
 function is_solid(x,y)
-  local tile=get_tile(x,y)
+  local tile=game:get_tile(x,y)
   return fget(tile,0)
 end
 
 function is_floor(x,y)
-  local tile=get_tile(x,y)
+  local tile=game:get_tile(x,y)
   return fget(tile,1)
 end
 
 function is_npc(x,y)
-  return 7 == get_tile(x,y)
+  return 7 == game:get_tile(x,y)
 end
 
 function swap_tile(offset,first,second)
@@ -414,18 +465,6 @@ function swap_tile(offset,first,second)
     poke(offset,second)
   elseif tile == second then
     poke(offset,first)
-  end
-end
-
-function tiles:swap(first,second)
-  local start_offset = 0x2000+camera_x/8+camera_y*0x780/8
-  for lin=start_offset,start_offset+0x780,128 do
-    for col=0,0xf do
-      local offset=lin+col
-      if (offset+self.swap_counter)%30==0 then
-        swap_tile(offset,first,second)
-      end
-    end
   end
 end
 
@@ -440,7 +479,7 @@ function draw_hud()
   rect(64,5,120,26,4)
   rectfill(66,16,69,18,5)
   color(11)
-  print("~castle gate~",6,20)
+  print('~'..game:room_name()..'~',6,20)
 end
 
 function draw_dialog()
