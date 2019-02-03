@@ -77,22 +77,25 @@ rooms={
     name='graveyard',
     camera_x=0,
     camera_y=0,
-    east='castle_gate'
+    east='castle_gate',
+    map_rect={66,16,68,18,5}
   },
   castle_gate={
     name='castle gate',
     camera_x=128,
     camera_y=0,
-    west='graveyard'
+    west='graveyard',
+    map_rect={70,16,72,18,5}
   }
 }
+
 
 function game:pause()
   self.is_paused = true
 end
 
 function game:init()
-  self.room=rooms['castle_gate']
+  self:enter_room('castle_gate')
   self.is_paused=false
 end
 
@@ -104,14 +107,18 @@ function game:room_name()
   return self.room.name
 end
 
+function game:enter_room(room_key)
+  local next_room=rooms[room_key]
+  self.room = next_room
+  known_rooms[room_key]=next_room
+end
+
 function game:go_west()
-  local next_room=rooms[self.room.west]
-  self.room=next_room
+  self:enter_room(self.room.west)
 end
 
 function game:go_east()
-  local next_room=rooms[self.room.east]
-  self.room=next_room
+  self:enter_room(self.room.east)
 end
 
 function game:get_tile(x,y)
@@ -128,6 +135,11 @@ function game:swap_tiles(first,second)
       end
     end
   end
+end
+
+function game:display_room_position()
+  local map_rect = self.room.map_rect
+  rectfill(map_rect[1],map_rect[2],map_rect[3],map_rect[4], 5)
 end
 
 -->8
@@ -436,6 +448,7 @@ function dot:update()
     self.y=self.y+1
   end
 end
+
 -->8
 -- tiles
 
@@ -478,15 +491,25 @@ end
 -->8
 -- hud
 
+known_rooms = {}
+
 function draw_hud()
   spr(6,6,4)
   spr(6,14,4)
   spr(6,22,4)
   rectfill(64,5,120,26,7)
   rect(64,5,120,26,4)
-  rectfill(66,16,69,18,5)
+  display_known_room_positions()
+  game:display_room_position()
   color(11)
   print('~'..game:room_name()..'~',6,20)
+end
+
+function display_known_room_positions()
+  for _,room in pairs(known_rooms) do
+    local map_rect = room.map_rect
+    rectfill(map_rect[1],map_rect[2],map_rect[3],map_rect[4], 6)
+  end
 end
 
 function draw_dialog()
@@ -494,8 +517,8 @@ function draw_dialog()
   rect(64,5,120,26,12)
   cursor(66,7)
   color(12)
-  print('"hey,')
-  print('what\'s up?"')
+  print('the door')
+  print('is closed!')
 end
 __gfx__
 00000000004bb00070000000ccc0000000000000000a000000000000440000000000000000000000000000000001111100000000333333330000000000000000
