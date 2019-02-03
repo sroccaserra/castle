@@ -4,9 +4,16 @@ __lua__
 -- ~castle~
 -- by sroccaserra
 
-v_0 = 4
-acc = -0.33
-dx_max=1
+local v_0 = 4
+local acc = -0.33
+local dx_max=1
+
+local joy_left=0
+local joy_right=1
+local joy_up=2
+local joy_down=3
+local joy_o=4
+local joy_x=5
 
 function _init()
   show_graph=false
@@ -132,14 +139,14 @@ function player:init()
   self.x=32
   self.y=104
   self.dy=0
-  self.direction=➡️
+  self.direction=joy_right
   self.is_talking=false
   sword_sprite=2
   min_y=128
 end
 
 function player:draw()
-  local must_flip=self.direction==⬅️
+  local must_flip=self.direction==joy_left
   spr(1, self.x, self.y,1,1,must_flip)
   spr(self.sword_sprite,self.x+7,self.y)
 end
@@ -149,7 +156,7 @@ function player:update()
     self:update_dialog()
     return
   end
-  if btnp(🅾️) then
+  if btnp(joy_o) then
    if is_npc(self:talk_x(),self:talk_y()) then
      self.is_talking=true
      return
@@ -158,18 +165,18 @@ function player:update()
   else
    self.sword_sprite=2
   end
-  if btnp(❎) and self:collides_down() then
+  if btnp(joy_x) and self:collides_down() then
     self.dy=v_0
   end
-  if btn(⬅️) then
+  if btn(joy_left) then
    self.x=self.x-dx_max
-   self.direction=⬅️
+   self.direction=joy_left
    if self:collides_left() then
      self.x=flr(self.x/8+1)*8-1
    end
-  elseif btn(➡️) then
+  elseif btn(joy_right) then
    self.x=self.x+dx_max
-   self.direction=➡️
+   self.direction=joy_right
    if self:collides_right() then
      self.x=flr(self.x/8)*8+1
    end
@@ -205,7 +212,7 @@ function player:left_x()
 end
 
 function player:talk_x()
-  if self.direction==➡️ then
+  if self.direction==joy_right then
     return self.x+12
   else
     return self.x-4
@@ -254,7 +261,7 @@ function player:start_talking()
 end
 
 function player:update_dialog()
-  if btnp(🅾️) then
+  if btnp(joy_o) then
    self.is_talking=false
   end  
 end
@@ -335,22 +342,22 @@ end
 -- debug
 
 function update_graph_values()
-  if btn(⬅️) then
+  if btn(joy_left) then
     v_0 = v_0 - .1
   end
-  if btn(➡️) then
+  if btn(joy_right) then
     v_0 = v_0 + .1
   end
-  if btn(⬆️) then
+  if btn(joy_up) then
     acc = min(0,acc + .01)
   end
-  if btn(⬇️) then
+  if btn(joy_down) then
     acc = acc-.01
   end
-  if btn(❎) then
+  if btn(joy_x) then
     dx_max = dx_max + .01
   end
-  if btn(🅾️) then
+  if btn(joy_o) then
     dx_max = max(0.1,dx_max-.01)
   end
 end
@@ -416,16 +423,16 @@ function dot:collides()
 end
 
 function dot:update()
-    if btn(⬅️) then
+    if btn(joy_left) then
     self.x=self.x-1
   end
-  if btn(➡️) then
+  if btn(joy_right) then
     self.x=self.x+1
   end
-  if btn(⬆️) then
+  if btn(joy_up) then
     self.y=self.y-1
   end
-  if btn(⬇️) then
+  if btn(joy_down) then
     self.y=self.y+1
   end
 end
@@ -489,7 +496,6 @@ function draw_dialog()
   color(12)
   print('"hey,')
   print('what\'s up?"')
-  print('🅾️')
 end
 __gfx__
 00000000004bb00070000000ccc0000000000000000a000000000000440000000000000000000000000000000001111100000000333333330000000000000000

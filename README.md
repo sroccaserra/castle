@@ -26,7 +26,7 @@ Ce mode sert à éditer le code de la cartouche dans votre éditeur préféré.
 
 Pour démarrer, créer un fichier `.env` sur le modèle de `.env.example` qui indique où se trouve votre exécutable `pico8`. Ce fichier `.env` ne sera pas versionné.
 
-## Lancer la cartouche
+### Lancer la cartouche
 
 Ensuite, lancer PICO-8 avec :
 
@@ -40,3 +40,11 @@ Une fois PICO-8 lancé, vous pouvez charger et lancer la cartouche :
 > load castle
 > run
 ```
+
+### Lancer les tests
+
+Les tests utilisent la librairie Lua [busted](https://olivinelabs.com/busted/).
+
+Pour s'exécuter, ils ont besoin de Lua 5.2. Le `Dockerfile` fournit cet environnement.
+
+La cible `make build` construit un container avec Lua 5.2 et busted, et la cible `make test` exécute les tests dans ce container.

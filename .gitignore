@@ -6,5 +6,6 @@ cstore
 log.txt
 plates
 sdl_controllers.txt
+tmp
 
 .local
