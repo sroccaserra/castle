@@ -59,6 +59,11 @@ function game:enter_room(room_key)
   end
 end
 
+function game:draw_room()
+  local camera_x,camera_y=self:room_camera()
+  map(camera_x/8,camera_y/8,0,hud_height,16,12)
+end
+
 function game:draw_mobs()
   for mob in all(self.room.mobs) do
     mob:draw()
