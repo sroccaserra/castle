@@ -12,7 +12,7 @@ La version v0.1.12 est nécessaire pour l'option `-root_path` et l'instruction `
 
 Lancer PICO-8, et exécuter la commande `folder`. Cette commande ouvre le répertoire de vos cartouches PICO-8.
 
-Copier la cartouche `carts/castle.p8` dans vos cartouches.
+Copier les fichiers du répertoire `carts/` dans vos cartouches.
 
 Chargez la cartouche et lancez la :
 ```
@@ -24,26 +24,22 @@ Chargez la cartouche et lancez la :
 
 Ce mode sert à lancer la cartouche depuis le dépot git, pour pouvoir versionner le code indépendamment du répertoire par défaut de PICO-8.
 
-### Indiquer où se trouve votre exécutable PICO-8
-
-Pour indiquer le chemin de `pico8`, vous pouvez soit renseigner la variable d'environnement `PICO_8` devant la commande `make`, soit créer un fichier `.env`.
+Pour lancer la cartouche, vous pouvez utiliser le `Makefile` à condition d'indiquer le chemin de l'exécutable `pico8`. Pour indiquer ce chemin, vous pouvez soit renseigner la variable d'environnement `PICO_8` devant la commande `make`, soit créer un fichier `.env`.
 
 **Par variable d'environnement**
 
 ```
-PICO_8=/path/to/pico8 make
+PICO_8=/path/to/pico8 make run
 ```
 
 **Par fichier `.env`**
 
 Créer un fichier `.env` sur le modèle de `.env.example` qui indique où se trouve votre exécutable `pico8`. Ce fichier `.env` ne sera pas versionné.
 
-### Lancer la cartouche
-
-Ensuite, lancer PICO-8 avec :
+Ensuite, lancer la cartouche avec :
 
 ```
-make start-pico8
+make run
 ```
 
 ### Lancer les tests

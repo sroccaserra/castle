@@ -5,8 +5,8 @@ PICO_8 ?= $(HOME)/Applications/Games/PICO-8/PICO-8.app/Contents/MacOS/pico8
 
 LUA_FILES := $(wildcard carts/*.lua)
 
-.PHONY: start-pico8
-start-pico8:
+.PHONY: run
+run:
 	$(PICO_8) -root_path carts -run carts/castle.p8
 
 tmp/castle.lua: $(LUA_FILES)
