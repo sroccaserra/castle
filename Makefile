@@ -1,10 +1,11 @@
-
-include .env
+-include .env
 export
+
+PICO_8 ?= $(HOME)/Applications/Games/PICO-8/PICO-8.app/Contents/MacOS/pico8
 
 .PHONY: start-pico8
 start-pico8:
-	$(PICO8) -home $(shell pwd)
+	$(PICO_8) -root_path carts -run carts/castle.p8
 
 tmp/castle.lua: carts/castle.p8
 	mkdir -p tmp

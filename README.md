@@ -4,7 +4,7 @@ Castle est une cartouche [PICO-8](https://www.lexaloffle.com/pico-8.php) en cour
 
 ## Prérequis
 
-Installer PICO-8.
+Installer PICO-8 v0.1.12.
 
 ## Lancer la cartouche
 
@@ -20,11 +20,21 @@ Chargez la cartouche et lancez la :
 
 ## Mode développement
 
-Ce mode sert à éditer le code de la cartouche dans votre éditeur préféré.
+Ce mode sert à lancer la cartouche depuis le dépot git, pour pouvoir versionner le code indépendamment du répertoire par défaut de PICO-8.
 
 ### Indiquer où se trouve votre exécutable PICO-8
 
-Pour démarrer, créer un fichier `.env` sur le modèle de `.env.example` qui indique où se trouve votre exécutable `pico8`. Ce fichier `.env` ne sera pas versionné.
+Pour indiquer le chemin de `pico8`, vous pouvez soit renseigner la variable d'environnement `PICO_8` devant la commande `make`, soit créer un fichier `.env`.
+
+**Par variable d'environnement**
+
+```
+PICO_8=/path/to/pico8 make
+```
+
+**Par fichier `.env`**
+
+Créer un fichier `.env` sur le modèle de `.env.example` qui indique où se trouve votre exécutable `pico8`. Ce fichier `.env` ne sera pas versionné.
 
 ### Lancer la cartouche
 
@@ -32,13 +42,6 @@ Ensuite, lancer PICO-8 avec :
 
 ```
 make start-pico8
-```
-
-Une fois PICO-8 lancé, vous pouvez charger et lancer la cartouche :
-
-```
-> load castle
-> run
 ```
 
 ### Lancer les tests
