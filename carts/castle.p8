@@ -87,7 +87,7 @@ function game:init()
       east='castle_gate',
       south='underground',
       map_rect={66,16,68,18},
-      mobs={bat:new(-71,63), bat:new(-8,74)}
+      mobs={bat:new(-18,100)}
     },
     castle_gate={
       name='castle gate',
@@ -361,12 +361,12 @@ end
 function bat:update()
   self.x=self.x+.5
   self.time=self.time+1
+  self.y=self.start_y+2*sin(t()/2)
   if self.time%6==0 then
     self.frame=3-self.frame
   end
   if self.x>128 then
     self.x=self.start_x
-    self.y=rnd(50)+42
   end
 end
 
