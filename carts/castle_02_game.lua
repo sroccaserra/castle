@@ -84,7 +84,7 @@ function game:go_south()
 end
 
 function game:get_tile(x,y)
-  return mget((self.room.camera_x+x)/8,(self.room.camera_y+y)/8)
+  return mget((self.room.camera_x+x)/8,(self.room.camera_y+y-hud_height)/8)
 end
 
 function game:swap_tiles(first,second)

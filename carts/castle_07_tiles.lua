@@ -13,7 +13,6 @@ function tiles:update()
   self.swap_counter=self.swap_counter+1
 end
 
-
 function is_solid(x,y)
   local tile=game:get_tile(x,y)
   return fget(tile,0)

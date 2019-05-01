@@ -2,6 +2,7 @@
 -- hud
 
 known_rooms = {}
+hud_height=32
 
 function draw_hud()
   spr(65)

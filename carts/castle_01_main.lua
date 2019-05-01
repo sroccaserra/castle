@@ -31,7 +31,7 @@ function _draw()
   cls()
   draw_hud()
   local camera_x,camera_y=game:room_camera()
-  map(camera_x/8,4+camera_y/8,0,32,16,12)
+  map(camera_x/8,camera_y/8,0,hud_height,16,12)
   player:draw()
   game:draw_mobs()
   if player.is_talking then
