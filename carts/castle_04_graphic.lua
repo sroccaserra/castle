@@ -8,7 +8,7 @@ graphic = {
   left=0
 }
 
-function graphic:draw_background()
+function graphic:draw_plot_background()
   camera()
   cursor()
   color(6)
@@ -33,7 +33,7 @@ function graphic:plot(x1,y1,x2,y2,c)
        x2,self.bottom-y2,c or 1)
 end
 
-function graphic:draw_gravity()
+function graphic:draw_gravity_plot()
   camera()
   local y2 = 0
   local x2 = 0

@@ -27,19 +27,19 @@ function _init()
 end
 
 function _draw()
-  game:room_camera()
-  cls()
-  map()
   camera()
+  cls()
   draw_hud()
+  local camera_x,camera_y=game:room_camera()
+  map(camera_x/8,4+camera_y/8,0,32,16,12)
   player:draw()
   game:draw_mobs()
   if player.is_talking then
     draw_dialog()
   end
   if show_graph then
-    graphic:draw_background()
-    graphic:draw_gravity()
+    graphic:draw_plot_background()
+    graphic:draw_gravity_plot()
   else
     if show_collision_points then
       player:show_collision_points()

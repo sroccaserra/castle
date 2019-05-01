@@ -4,6 +4,7 @@
 known_rooms = {}
 
 function draw_hud()
+  map(0,0,0,0,16,4)
   spr(6,6,4)
   spr(6,14,4)
   spr(6,22,4)

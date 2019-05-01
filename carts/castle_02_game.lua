@@ -29,7 +29,7 @@ function game:init()
     underground={
       name='underground',
       camera_x=0,
-      camera_y=128,
+      camera_y=96,
       map_rect={66,20,68,22},
       mobs={}
     }
@@ -40,7 +40,7 @@ function game:init()
 end
 
 function game:room_camera()
-  camera(self.room.camera_x,self.room.camera_y)
+  return self.room.camera_x,self.room.camera_y
 end
 
 function game:room_name()
