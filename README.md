@@ -6,6 +6,8 @@ Castle est une cartouche [PICO-8](https://www.lexaloffle.com/pico-8.php) en cour
 
 Installer PICO-8 v0.1.12.
 
+La version v0.1.12 est nécessaire pour l'option `-root_path` et l'instruction `#include`.
+
 ## Lancer la cartouche
 
 Lancer PICO-8, et exécuter la commande `folder`. Cette commande ouvre le répertoire de vos cartouches PICO-8.
