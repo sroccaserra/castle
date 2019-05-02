@@ -156,6 +156,7 @@ function player:show_collision_points()
 end
 
 bat={}
+bat.__index=bat
 
 function bat:new(x,y)
   local o={
@@ -163,7 +164,6 @@ function bat:new(x,y)
     start_y=y
   }
   setmetatable(o, self)
-  self.__index=self
   o:init()
   return o
 end
