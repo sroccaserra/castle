@@ -24,7 +24,8 @@ function game:init()
       camera_y=0,
       west='graveyard',
       map_rect={70,16,72,18},
-      mobs={}
+      mobs={},
+      draw_sky=true
     },
     underground={
       name='underground',
@@ -59,7 +60,16 @@ function game:enter_room(room_key)
   end
 end
 
+function game:draw_sky()
+  for i=0,120,8 do
+    spr(43,i,48,1,1,i%16 == 0)
+  end
+end
+
 function game:draw_room()
+  if self.room.draw_sky then
+    self:draw_sky()
+  end
   local camera_x,camera_y=self:room_camera()
   map(camera_x/8,camera_y/8,0,hud_height,16,12)
 end
