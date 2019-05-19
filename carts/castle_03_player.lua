@@ -16,7 +16,8 @@ end
 function player:draw()
   local must_flip=self.direction==joy_left
   spr(1, self.x, self.y,1,1,must_flip)
-  spr(self.sword_sprite,self.x+7,self.y)
+  local sword_x = must_flip and self.x-7 or self.x+7
+  spr(self.sword_sprite,sword_x,self.y,1,1,must_flip)
 end
 
 function player:update()
