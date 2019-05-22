@@ -12,6 +12,7 @@ function player:init()
   sword_sprite=2
   min_y=128
   self.recover_frames = 0
+  self.nb_hearts = 3
 end
 
 function player:draw()
@@ -191,7 +192,11 @@ function player:draw_collision_box()
 end
 
 function player:hit()
+  if self:is_recovering() then
+    return
+  end
   self.recover_frames = 60
+  self.nb_hearts = self.nb_hearts - 1
 end
 
 function player:is_recovering()
