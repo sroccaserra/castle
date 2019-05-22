@@ -203,6 +203,10 @@ function player:is_recovering()
   return self.recover_frames > 0
 end
 
+function player:is_dead()
+  return 0 == self.nb_hearts
+end
+
 ---
 -- bat
 

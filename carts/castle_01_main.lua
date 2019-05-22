@@ -51,6 +51,11 @@ function _draw()
 end
 
 function _update60()
+  if player:is_dead() then
+    _init()
+    return
+  end
+
   tiles:update()
   if game.is_paused then
     return
