@@ -175,6 +175,21 @@ function player:show_collision_points()
   pixel(self:talk_x(),self:talk_y(),8)
 end
 
+function player:collision_box()
+  local padding = 2
+   return {
+    x_left = self.x+padding,
+    y_top = self.y+padding,
+    x_right = self.x+8-padding,
+    y_bottom = self.y+8-padding,
+  }
+end
+
+function player:draw_collision_box()
+  local box = self:collision_box()
+  rect(box.x_left, box.y_top, box.x_right, box.y_bottom)
+end
+
 function player:hit()
   self.recover_frames = 60
 end
@@ -212,8 +227,26 @@ function bat:draw()
   spr(sprite,self.x,self.y)
 end
 
+function bat:collision_box()
+  local padding = 2
+  return {
+    x_left = self.x+padding,
+    y_top = self.y+padding,
+    x_right = self.x+8-padding,
+    y_bottom = self.y+8-padding,
+  }
+end
+
 function bat:collides_with(a_bounded_object)
-   return true
+  local collision_box = self:collision_box()
+  local other_collision_box = a_bounded_object:collision_box()
+
+  max_left = max(collision_box.x_left, other_collision_box.x_left)
+  min_right = min(collision_box.x_right, other_collision_box.x_right)
+  max_top = max(collision_box.y_top, other_collision_box.y_top)
+  min_bottom = min(collision_box.y_bottom, other_collision_box.y_bottom)
+
+  return max_left <= min_right and max_top <= min_bottom
 end
 
 function bat:update()

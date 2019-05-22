@@ -42,6 +42,7 @@ function _draw()
   else
     if show_collision_points then
       player:show_collision_points()
+      player:draw_collision_box()
     end
     if show_dot then
       dot:draw()
