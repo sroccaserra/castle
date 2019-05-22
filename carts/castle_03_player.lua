@@ -12,7 +12,6 @@ function player:init()
   sword_sprite=2
   min_y=128
   self.recover_frames = 0
-  self:hit()
 end
 
 function player:draw()
@@ -213,6 +212,10 @@ function bat:draw()
   spr(sprite,self.x,self.y)
 end
 
+function bat:collides_with(a_bounded_object)
+   return true
+end
+
 function bat:update()
   self.x=self.x+.5
   self.time=self.time+1
@@ -222,5 +225,9 @@ function bat:update()
   end
   if self.x>128 then
     self.x=self.start_x
+  end
+
+  if self:collides_with(player) then
+    player:hit()
   end
 end
