@@ -11,9 +11,14 @@ function player:init()
   self.is_talking=false
   sword_sprite=2
   min_y=128
+  self.recover_frames = 0
+  self:hit()
 end
 
 function player:draw()
+  if self:is_recovering() and 0 == flr(12*t())%2 then
+    return
+  end
   local must_flip=self.direction==joy_left
   spr(1, self.x, self.y,1,1,must_flip)
   local sword_x = must_flip and self.x-7 or self.x+7
@@ -24,6 +29,10 @@ function player:update()
   if self.is_talking then
     self:update_dialog()
     return
+  end
+
+  if self:is_recovering() then
+    self.recover_frames = self.recover_frames - 1
   end
 
   self:apply_joystick_commands()
@@ -165,6 +174,14 @@ function player:show_collision_points()
   pixel(self:right_x(),self.y+8,8)
   pixel(self:left_x(),self.y+8,8)
   pixel(self:talk_x(),self:talk_y(),8)
+end
+
+function player:hit()
+  self.recover_frames = 60
+end
+
+function player:is_recovering()
+  return self.recover_frames > 0
 end
 
 ---
