@@ -25,6 +25,15 @@ function player:update()
     self:update_dialog()
     return
   end
+
+  self:apply_joystick_commands()
+  self:apply_gravity()
+  self:apply_collisions()
+
+  self:change_room_if_out_of_bound()
+end
+
+function player:apply_joystick_commands()
   if btnp(joy_o) then
    if is_npc(self:talk_x(),self:talk_y()) then
      self.is_talking=true
@@ -50,9 +59,9 @@ function player:update()
      self.x=flr(self.x/8)*8+1
    end
   end
+end
 
-  self:apply_gravity()
-
+function player:apply_collisions()
   if self:collides_up() then
     self.y=flr(self.y/8)*8+8
     self.dy=0
@@ -62,7 +71,9 @@ function player:update()
     self.y=flr(self.y/8)*8
     self.dy=0
   end
+end
 
+function player:change_room_if_out_of_bound()
   if self.x<0 then
     game:go_west()
     self.x=120
@@ -155,6 +166,9 @@ function player:show_collision_points()
   pixel(self:left_x(),self.y+8,8)
   pixel(self:talk_x(),self:talk_y(),8)
 end
+
+---
+-- bat
 
 bat={}
 bat.__index=bat
