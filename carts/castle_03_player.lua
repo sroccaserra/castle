@@ -178,7 +178,7 @@ end
 
 function player:update_dialog()
   if btnp(joy_o) then
-   self.is_talking=false
+    self.is_talking=false
   end  
 end
 
@@ -201,7 +201,7 @@ end
 
 function player:collision_box()
   local padding = 2
-   return {
+  return {
     x_left = self.x+padding,
     y_top = self.y+padding,
     x_right = self.x+7-padding,
@@ -228,7 +228,7 @@ function player:draw_collision_boxes()
   end
 end
 
-function player:hit()
+function player:take_hit()
   if self:is_recovering() then
     return
   end
@@ -266,9 +266,13 @@ function bat:init()
   self.animation={8,9}
   self.frame=1
   self.time=0
+  self.is_dead=false
 end
 
 function bat:draw()
+  if self.is_dead then
+    return
+  end
   local sprite=self.animation[self.frame]
   spr(sprite,self.x,self.y)
 end
@@ -282,9 +286,11 @@ function bat:collision_box()
   }
 end
 
-function bat:collides_with(a_bounded_object)
+function bat:collides_with(other_collision_box)
+  if self.is_dead then
+    return
+  end
   local collision_box = self:collision_box()
-  local other_collision_box = a_bounded_object:collision_box()
 
   max_left = max(collision_box.x_left, other_collision_box.x_left)
   min_right = min(collision_box.x_right, other_collision_box.x_right)
@@ -294,7 +300,18 @@ function bat:collides_with(a_bounded_object)
   return max_left <= min_right and max_top <= min_bottom
 end
 
+function bat:die()
+  --game:remove_mob(self)
+  self.is_dead=true
+  for i=1,10 do
+    add(sparks, spark:new(self.x+4,self.y+4))
+  end
+end
+
 function bat:update()
+  if self.is_dead then
+    return
+  end
   self.x=self.x+.5
   self.time=self.time+1
   self.y=self.start_y+2*sin(t()/2)
@@ -305,7 +322,44 @@ function bat:update()
     self.x=self.start_x
   end
 
-  if self:collides_with(player) then
-    player:hit()
+  if player:is_attacking() and self:collides_with(player:sword_collision_box()) then
+    self:die()
   end
+
+  if self:collides_with(player:collision_box()) then
+    player:take_hit()
+  end
+end
+
+---
+-- spark
+
+spark = {}
+spark.__index = spark
+
+function spark:new(x,y)
+  local o={
+    x=x+rnd(2)-1,
+    y=y+rnd(2)-1,
+    v_x=rnd(2)-1,
+    v_y=rnd(1)-0.5,
+    r=3
+  }
+  setmetatable(o, self)
+  return o
+end
+
+function spark:draw()
+  circfill(self.x,self.y,self.r,8)
+  circfill(self.x,self.y,self.r-1,9)
+end
+
+function spark:update()
+  self.r=self.r-0.2
+  if self.r<=0 then
+    del(sparks,self)
+  end
+  self.x=self.x+self.v_x
+  self.y=self.y+self.v_y
+  self.v_y=self.v_y+0.05
 end

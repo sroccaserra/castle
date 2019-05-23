@@ -2,6 +2,7 @@
 -- game
 
 game={}
+sparks={}
 
 function game:pause()
   self.is_paused = true
@@ -78,12 +79,22 @@ function game:draw_mobs()
   for mob in all(self.room.mobs) do
     mob:draw()
   end
+  for spark in all(sparks) do
+    spark:draw()
+  end
 end
 
 function game:update_mobs()
   for mob in all(self.room.mobs) do
     mob:update()
   end
+  for spark in all(sparks) do
+    spark:update()
+  end
+end
+
+function game:remove_mob(mob)
+  del(self.room.mobs, mob)
 end
 
 function game:go_west()
