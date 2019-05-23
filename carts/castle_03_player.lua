@@ -9,10 +9,10 @@ function player:init()
   self.dy=0
   self.direction=joy_right
   self.is_talking=false
-  sword_sprite=2
   min_y=128
   self.recover_frames = 0
   self.nb_hearts = 3
+  self.attack_frames = 0
 end
 
 function player:draw()
@@ -21,8 +21,14 @@ function player:draw()
   end
   local must_flip=self.direction==joy_left
   spr(1, self.x, self.y,1,1,must_flip)
+  local sword_sprite
+  if self:is_attacking() then
+    sword_sprite=3
+  else
+    sword_sprite = 2
+  end
   local sword_x = must_flip and self.x-7 or self.x+7
-  spr(self.sword_sprite,sword_x,self.y,1,1,must_flip)
+  spr(sword_sprite,sword_x,self.y,1,1,must_flip)
 end
 
 function player:update()
@@ -35,6 +41,10 @@ function player:update()
     self.recover_frames = self.recover_frames - 1
   end
 
+  if self:is_attacking() then
+    self.attack_frames = self.attack_frames - 1
+  end
+
   self:apply_joystick_commands()
   self:apply_gravity()
   self:apply_collisions()
@@ -44,29 +54,27 @@ end
 
 function player:apply_joystick_commands()
   if btnp(joy_o) then
-   if is_npc(self:talk_x(),self:talk_y()) then
-     self.is_talking=true
-     return
-   end
-   self.sword_sprite=3
-  else
-   self.sword_sprite=2
+    if is_npc(self:talk_x(),self:talk_y()) then
+      self.is_talking=true
+      return
+    end
+    self:attack()
   end
   if btnp(joy_x) and self:collides_down() then
     self.dy=v_0
   end
   if btn(joy_left) then
-   self.x=self.x-dx_max
-   self.direction=joy_left
-   if self:collides_left() then
-     self.x=flr(self.x/8+1)*8-1
-   end
+    self.x=self.x-dx_max
+    self.direction=joy_left
+    if self:collides_left() then
+      self.x=flr(self.x/8+1)*8-1
+    end
   elseif btn(joy_right) then
-   self.x=self.x+dx_max
-   self.direction=joy_right
-   if self:collides_right() then
-     self.x=flr(self.x/8)*8+1
-   end
+    self.x=self.x+dx_max
+    self.direction=joy_right
+    if self:collides_right() then
+      self.x=flr(self.x/8)*8+1
+    end
   end
 end
 
@@ -94,6 +102,14 @@ function player:change_room_if_out_of_bound()
     game:go_south()
     self.y=32
   end
+end
+
+function player:attack()
+  self.attack_frames=5
+end
+
+function player:is_attacking()
+  return self.attack_frames > 0
 end
 
 function player:right_x()
