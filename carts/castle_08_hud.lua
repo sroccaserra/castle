@@ -23,9 +23,7 @@ function draw_hud()
     spr(67,i,24,1,1,false,true)
   end
 
-  for i=0,player.nb_hearts-1 do
-    spr(6,6+i*8,4)
-  end
+  draw_hearts()
 
   rectfill(64,5,120,26,7)
   rect(64,5,120,26,4)
@@ -33,6 +31,17 @@ function draw_hud()
   game:display_room_position()
   color(11)
   print('~'..game:room_name()..'~',6,20)
+end
+
+function draw_hearts()
+  for i=0,player.nb_hearts-1 do
+    spr(6,6+i*8,4)
+  end
+  pal(8, 0)
+  for i=player.nb_hearts,2 do
+    spr(6,6+i*8,4)
+  end
+  pal()
 end
 
 function display_known_room_positions()
