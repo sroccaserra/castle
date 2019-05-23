@@ -19,16 +19,23 @@ function player:draw()
   if self:is_recovering() and 0 == flr(12*t())%2 then
     return
   end
-  local must_flip=self.direction==joy_left
+  local must_flip = not self:is_facing_right()
   spr(1, self.x, self.y,1,1,must_flip)
-  local sword_sprite
-  if self:is_attacking() then
-    sword_sprite=3
-  else
-    sword_sprite = 2
-  end
-  local sword_x = must_flip and self.x-7 or self.x+7
-  spr(sword_sprite,sword_x,self.y,1,1,must_flip)
+
+  self:draw_sword(must_flip)
+end
+
+function player:is_facing_right()
+  return self.direction == joy_right
+end
+
+function player:draw_sword(must_flip)
+  local sword_sprite = self:is_attacking() and 3 or 2
+  spr(sword_sprite,self:get_sword_x(),self.y,1,1,must_flip)
+end
+
+function player:get_sword_x()
+  return self:is_facing_right() and self.x+7 or self.x-7
 end
 
 function player:update()
@@ -197,14 +204,28 @@ function player:collision_box()
    return {
     x_left = self.x+padding,
     y_top = self.y+padding,
-    x_right = self.x+8-padding,
+    x_right = self.x+7-padding,
     y_bottom = self.y+8-padding,
   }
 end
 
-function player:draw_collision_box()
+function player:sword_collision_box()
+  local sword_x = self:get_sword_x()
+  return {
+    x_left=sword_x,
+    y_top=self.y,
+    x_right=sword_x+5,
+    y_bottom=self.y+5,
+  }
+end
+
+function player:draw_collision_boxes()
   local box = self:collision_box()
   rect(box.x_left, box.y_top, box.x_right, box.y_bottom)
+  if self:is_attacking() then
+    box = self:sword_collision_box()
+    rect(box.x_left, box.y_top, box.x_right, box.y_bottom)
+  end
 end
 
 function player:hit()
