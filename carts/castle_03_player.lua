@@ -237,12 +237,11 @@ function bat:draw()
 end
 
 function bat:collision_box()
-  local padding = 2
   return {
-    x_left = self.x+padding,
-    y_top = self.y+padding,
-    x_right = self.x+8-padding,
-    y_bottom = self.y+8-padding,
+    x_left = self.x,
+    y_top = self.y,
+    x_right = self.x+8,
+    y_bottom = self.y+8,
   }
 end
 
