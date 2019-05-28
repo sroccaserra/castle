@@ -5,9 +5,9 @@ PICO_8 ?= $(HOME)/Applications/Games/PICO-8/PICO-8.app/Contents/MacOS/pico8
 
 LUA_FILES := $(wildcard carts/*.lua)
 
-.PHONY: run
-run:
-	$(PICO_8) -root_path carts -run carts/castle.p8
+.PHONY: test
+test: tmp/castle.lua
+	docker run --rm -t -v $(shell pwd):/app -w /app castle-test busted
 
 tmp/castle.lua: $(LUA_FILES)
 	mkdir -p tmp
@@ -16,6 +16,7 @@ tmp/castle.lua: $(LUA_FILES)
 build:
 	docker build -t castle-test .
 
-.PHONY: test
-test: tmp/castle.lua
-	docker run --rm -t -v $(shell pwd):/app -w /app castle-test busted
+.PHONY: run
+run:
+	$(PICO_8) -root_path carts -run carts/castle.p8
+

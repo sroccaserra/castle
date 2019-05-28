@@ -2,10 +2,14 @@
 -- player
 
 player = {}
+x_bounce_back = 4
+y_bounce_back = 1
+player_start_x = 32
 
 function player:init()
-  self.x=32
+  self.x=player_start_x
   self.y=104
+  self.dx=0
   self.dy=0
   self.direction=joy_right
   self.is_talking=false
@@ -168,8 +172,14 @@ function player:collides_down()
 end
 
 function player:apply_gravity()
+  self.x = self.x+self.dx
   self.y = self.y-self.dy
   self.dy = max(-7,self.dy + acc)
+  if self.dx == 0 then
+    return
+  end
+  local x_dec = self.dx >= 0 and 1 or -1
+  self.dx = self.dx - x_dec
 end
 
 function player:start_talking()
@@ -234,6 +244,12 @@ function player:take_hit()
   end
   self.recover_frames = 60
   self.nb_hearts = self.nb_hearts - 1
+  self:bounce_back()
+end
+
+function player:bounce_back()
+  self.dx = self:is_facing_right() and -x_bounce_back or x_bounce_back
+  self.dy = y_bounce_back
 end
 
 function player:is_recovering()

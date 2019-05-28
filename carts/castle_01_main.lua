@@ -1,15 +1,15 @@
 -- main
 
-local v_0 = 4
-local acc = -0.33
-local dx_max=1
+v_0 = 4
+acc = -0.33
+dx_max=1
 
-local joy_left=0
-local joy_right=1
-local joy_up=2
-local joy_down=3
-local joy_o=4
-local joy_x=5
+joy_left=0
+joy_right=1
+joy_up=2
+joy_down=3
+joy_o=4
+joy_x=5
 
 function _init()
   show_graph=false
