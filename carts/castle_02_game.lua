@@ -41,6 +41,50 @@ function game:init()
   self.is_paused=false
 end
 
+function game:draw()
+  camera()
+  cls()
+  draw_hud()
+  self:draw_room()
+  player:draw()
+  self:draw_mobs()
+  if player.is_talking then
+    draw_dialog()
+  end
+  if show_graph then
+    graphic:draw_plot_background()
+    graphic:draw_gravity_plot()
+  else
+    if show_collision_points then
+      player:show_collision_points()
+      player:draw_collision_boxes()
+    end
+    if show_dot then
+      dot:draw()
+    end
+  end
+end
+
+function game:update()
+  if player:is_dead() then
+    goto_death_screen()
+    return
+  end
+
+  tiles:update()
+  if self.is_paused then
+    return
+  end
+  if show_graph then
+    update_graph_values()
+  elseif show_dot then
+    dot:update()
+  else
+    self:update_mobs()
+    player:update()
+  end
+end
+
 function game:room_camera()
   return self.room.camera_x,self.room.camera_y
 end
