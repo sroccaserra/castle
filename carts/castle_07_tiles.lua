@@ -23,6 +23,11 @@ function is_floor(x,y)
   return fget(tile,1)
 end
 
+function is_spikes(x,y)
+  local tile=game:get_tile(x,y)
+  return fget(tile,2)
+end
+
 function is_npc(x,y)
   return 7 == game:get_tile(x,y)
 end

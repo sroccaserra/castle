@@ -26,6 +26,6 @@ _G.mget = function()
 end
 
 _G.fget = function()
-  return true
+  return false
 end
 

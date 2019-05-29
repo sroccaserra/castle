@@ -59,6 +59,7 @@ function player:update()
   self:apply_joystick_commands()
   self:apply_gravity()
   self:apply_collisions()
+  self:apply_damages()
 
   self:change_room_if_out_of_bound()
 end
@@ -98,6 +99,12 @@ function player:apply_collisions()
   if self:collides_down() then
     self.y=flr(self.y/8)*8
     self.dy=0
+  end
+end
+
+function player:apply_damages()
+  if self:is_on_spikes() then
+    self:take_hit()
   end
 end
 
@@ -169,6 +176,12 @@ function player:collides_down()
       or is_solid(self:left_x(),under_y)
       or is_floor(self:right_x(),under_y)
       or is_floor(self:left_x(),under_y)
+end
+
+function player:is_on_spikes()
+  local under_y=self.y+8
+  return is_spikes(self:right_x(),under_y)
+     and is_spikes(self:left_x(),under_y)
 end
 
 function player:apply_gravity()
