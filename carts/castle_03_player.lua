@@ -73,7 +73,7 @@ function player:apply_joystick_commands()
     self:attack()
   end
   if btnp(joy_x) and self:collides_down() then
-    self.dy=v_0
+    self:jump()
   end
   if btn(joy_left) then
     self.x=self.x-dx_max
@@ -88,6 +88,11 @@ function player:apply_joystick_commands()
       self.x=flr(self.x/8)*8+1
     end
   end
+end
+
+function player:jump()
+  self.dy=v_0
+  sfx(0)
 end
 
 function player:apply_collisions()
@@ -124,6 +129,7 @@ end
 
 function player:attack()
   self.attack_frames=5
+  sfx(5)
 end
 
 function player:is_attacking()
