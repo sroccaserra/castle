@@ -286,10 +286,37 @@ function player:add_key()
 end
 
 ---
+-- collidable
+
+collidable = {}
+collidable.__index = collidable
+
+function collidable:collides_with(other_collision_box)
+  local collision_box = self:collision_box()
+
+  max_left = max(collision_box.x_left, other_collision_box.x_left)
+  min_right = min(collision_box.x_right, other_collision_box.x_right)
+  max_top = max(collision_box.y_top, other_collision_box.y_top)
+  min_bottom = min(collision_box.y_bottom, other_collision_box.y_bottom)
+
+  return max_left <= min_right and max_top <= min_bottom
+end
+
+function collidable:collision_box()
+  return {
+    x_left = self.x,
+    y_top = self.y,
+    x_right = self.x+8,
+    y_bottom = self.y+8,
+  }
+end
+
+---
 -- bat
 
 bat={}
 bat.__index=bat
+setmetatable(bat, collidable)
 
 function bat:new(x,y)
   local o={
@@ -318,27 +345,11 @@ function bat:draw()
   spr(sprite,self.x,self.y)
 end
 
-function bat:collision_box()
-  return {
-    x_left = self.x,
-    y_top = self.y,
-    x_right = self.x+8,
-    y_bottom = self.y+8,
-  }
-end
-
 function bat:collides_with(other_collision_box)
   if self.is_dead then
     return
   end
-  local collision_box = self:collision_box()
-
-  max_left = max(collision_box.x_left, other_collision_box.x_left)
-  min_right = min(collision_box.x_right, other_collision_box.x_right)
-  max_top = max(collision_box.y_top, other_collision_box.y_top)
-  min_bottom = min(collision_box.y_bottom, other_collision_box.y_bottom)
-
-  return max_left <= min_right and max_top <= min_bottom
+  return collidable.collides_with(self, other_collision_box)
 end
 
 function bat:die()
@@ -377,6 +388,7 @@ end
 
 key = {}
 key.__index = key
+setmetatable(key, collidable)
 
 function key:new(x, y)
   local o = {
@@ -399,27 +411,6 @@ function key:update()
     self:get()
   end
 end
-
-function key:collision_box()
-  return {
-    x_left = self.x,
-    y_top = self.y,
-    x_right = self.x+8,
-    y_bottom = self.y+8,
-  }
-end
-
-function key:collides_with(other_collision_box)
-  local collision_box = self:collision_box()
-
-  max_left = max(collision_box.x_left, other_collision_box.x_left)
-  min_right = min(collision_box.x_right, other_collision_box.x_right)
-  max_top = max(collision_box.y_top, other_collision_box.y_top)
-  min_bottom = min(collision_box.y_bottom, other_collision_box.y_bottom)
-
-  return max_left <= min_right and max_top <= min_bottom
-end
-
 
 function key:get()
   player:add_key()
