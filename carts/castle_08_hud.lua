@@ -24,6 +24,7 @@ function draw_hud()
   end
 
   draw_hearts()
+  draw_keys()
 
   rectfill(64,5,120,26,7)
   rect(64,5,120,26,4)
@@ -42,6 +43,13 @@ function draw_hearts()
     spr(6,6+i*8,4)
   end
   pal()
+end
+
+function draw_keys()
+  spr(5, 40, 5)
+  line(48, 8, 50, 10, 7)
+  line(50, 8, 48, 10, 7)
+  print(player.keys, 52, 7, 7)
 end
 
 function display_known_room_positions()

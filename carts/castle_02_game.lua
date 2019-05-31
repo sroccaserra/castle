@@ -4,36 +4,57 @@
 game={}
 sparks={}
 
+room_width = 128
+room_height = 96
+
 function game:pause()
   self.is_paused = true
 end
 
 function game:init()
-  rooms={
-    graveyard={
-      name='graveyard',
-      camera_x=0,
-      camera_y=0,
-      east='castle_gate',
-      south='underground',
-      map_rect={66,16,68,18},
-      mobs={bat:new(-18,100)}
+  rooms = {
+    graveyard = {
+      name = 'graveyard',
+      camera_x = 0,
+      camera_y = 0,
+      east = 'castle_gate',
+      south = 'underground',
+      map_rect = {66, 16, 68, 18},
+      mobs = {bat:new(-18, 100)}
     },
-    castle_gate={
-      name='castle gate',
-      camera_x=128,
-      camera_y=0,
-      west='graveyard',
-      map_rect={70,16,72,18},
-      mobs={},
-      draw_sky=true
+    castle_gate = {
+      name = 'castle gate',
+      camera_x = room_width,
+      camera_y = 0,
+      west = 'graveyard',
+      map_rect = {70, 16, 72, 18},
+      mobs = {},
+      draw_sky = true
     },
-    underground={
-      name='underground',
-      camera_x=0,
-      camera_y=96,
-      map_rect={66,20,68,22},
-      mobs={}
+    underground = {
+      name = 'underground',
+      camera_x = 0,
+      camera_y = room_height,
+      east = 'secret_pathway',
+      map_rect = {66, 20, 68, 22},
+      mobs = {key:new(16, 63)}
+    },
+    secret_pathway = {
+      name = 'secret',
+      camera_x = room_width,
+      camera_y = room_height,
+      west = 'underground',
+      east = 'stairway',
+      map_rect = {70, 20, 72, 22},
+      mobs = {}
+    },
+    stairway = {
+      name = 'stairway',
+      camera_x = room_width * 2,
+      camera_y = room_height,
+      west = 'secret_pathway',
+      map_rect = {74, 20, 76, 22},
+      mobs = {}
     }
   }
 

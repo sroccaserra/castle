@@ -17,6 +17,7 @@ function player:init()
   self.recover_frames = 0
   self.nb_hearts = 3
   self.attack_frames = 0
+  self.keys = 0
 end
 
 function player:draw()
@@ -280,6 +281,10 @@ function player:is_dead()
   return 0 == self.nb_hearts
 end
 
+function player:add_key()
+  self.keys = self.keys + 1
+end
+
 ---
 -- bat
 
@@ -337,7 +342,6 @@ function bat:collides_with(other_collision_box)
 end
 
 function bat:die()
-  --game:remove_mob(self)
   sfx(7)
   self.is_dead=true
   for i=1,10 do
@@ -366,6 +370,60 @@ function bat:update()
   if self:collides_with(player:collision_box()) then
     player:take_hit()
   end
+end
+
+---
+-- key
+
+key = {}
+key.__index = key
+
+function key:new(x, y)
+  local o = {
+    x = x,
+    y = y
+  }
+  setmetatable(o, self)
+  return o
+end
+
+function key:init()
+end
+
+function key:draw()
+  spr(5, self.x, self.y)
+end
+
+function key:update()
+  if self:collides_with(player:collision_box()) then
+    self:get()
+  end
+end
+
+function key:collision_box()
+  return {
+    x_left = self.x,
+    y_top = self.y,
+    x_right = self.x+8,
+    y_bottom = self.y+8,
+  }
+end
+
+function key:collides_with(other_collision_box)
+  local collision_box = self:collision_box()
+
+  max_left = max(collision_box.x_left, other_collision_box.x_left)
+  min_right = min(collision_box.x_right, other_collision_box.x_right)
+  max_top = max(collision_box.y_top, other_collision_box.y_top)
+  min_bottom = min(collision_box.y_bottom, other_collision_box.y_bottom)
+
+  return max_left <= min_right and max_top <= min_bottom
+end
+
+
+function key:get()
+  player:add_key()
+  game:remove_mob(self)
 end
 
 ---
