@@ -261,6 +261,7 @@ function player:take_hit()
   if self:is_recovering() then
     return
   end
+  sfx(6)
   self.recover_frames = 60
   self.nb_hearts = self.nb_hearts - 1
   self:bounce_back()
@@ -337,6 +338,7 @@ end
 
 function bat:die()
   --game:remove_mob(self)
+  sfx(7)
   self.is_dead=true
   for i=1,10 do
     add(sparks, spark:new(self.x+4,self.y+4))
