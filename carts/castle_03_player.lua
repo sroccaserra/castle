@@ -282,6 +282,7 @@ function player:is_dead()
 end
 
 function player:add_key()
+  sfx(8)
   self.keys = self.keys + 1
 end
 
