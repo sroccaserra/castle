@@ -130,6 +130,12 @@ function game:draw_sky()
   for i=0,120,8 do
     spr(43,i,48,1,1,i%16 == 0)
   end
+  for j=0,8,8 do
+    for i=0,120,8 do
+      spr(45,i,32+j)
+    end
+  end
+  spr(44,8,40)
 end
 
 function game:draw_room()
