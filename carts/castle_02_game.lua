@@ -184,11 +184,17 @@ function game:get_tile(x,y)
   return mget((self.room.camera_x+x)/8,(self.room.camera_y+y-hud_height)/8)
 end
 
+--
+-- 0, 16, ... , 127
+-- 128, ... , 255
+-- ...
+--
+
 function game:swap_tiles(first,second)
-  local start_offset = 0x2000+self.room.camera_x/8+self.room.camera_y*0x780/8
-  for lin=start_offset,start_offset+0x780,128 do
-    for col=0,0xf do
-      local offset=lin+col
+  local start_offset = 0x2000+(self.room.camera_y/8)*0x80+self.room.camera_x/8
+  for row=start_offset,start_offset+0x580,128 do
+    for col=0,15 do
+      local offset=row+col
       if (offset+tiles.swap_counter)%30==0 then
         swap_tile(offset,first,second)
       end
