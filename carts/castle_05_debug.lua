@@ -22,6 +22,9 @@ function update_graph_values()
   end
 end
 
+---
+-- Menu actions
+
 function toggle_graph()
   show_graph = not show_graph
 end
@@ -38,8 +41,4 @@ function toggle_music()
     music()
     play_music=true
   end
-end
-
-function pixel(x,y,col)
-  line(x,y,x,y,col)
 end

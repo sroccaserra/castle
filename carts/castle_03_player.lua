@@ -222,11 +222,11 @@ function player:show_collision_points()
   print('dy: '..self.dy,1,7,8)
   print('min y: '..min_y,1,13,8)
 
-  pixel(self:left_x(),self.y,8)
-  pixel(self:right_x(),self.y,8)
-  pixel(self:right_x(),self.y+8,8)
-  pixel(self:left_x(),self.y+8,8)
-  pixel(self:talk_x(),self:talk_y(),8)
+  pset(self:left_x(),self.y,8)
+  pset(self:right_x(),self.y,8)
+  pset(self:right_x(),self.y+8,8)
+  pset(self:left_x(),self.y+8,8)
+  pset(self:talk_x(),self:talk_y(),8)
 end
 
 function player:collision_box()
