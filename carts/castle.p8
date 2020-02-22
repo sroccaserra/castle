@@ -9,7 +9,6 @@ __lua__
 #include castle_03_player.lua
 #include castle_04_graphic.lua
 #include castle_05_debug.lua
-#include castle_06_dot.lua
 #include castle_07_tiles.lua
 #include castle_08_hud.lua
 __gfx__
