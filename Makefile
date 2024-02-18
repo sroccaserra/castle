@@ -1,7 +1,7 @@
 -include .env
 export
 
-PICO_8 ?= $(HOME)/Applications/Games/PICO-8/PICO-8.app/Contents/MacOS/pico8
+PICO_8 ?= pico8
 
 LUA_FILES := $(wildcard carts/*.lua)
 
